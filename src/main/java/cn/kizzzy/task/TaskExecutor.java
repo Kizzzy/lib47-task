@@ -8,5 +8,7 @@ public interface TaskExecutor extends Executor, TaskQueue {
     
     boolean stop();
     
+    boolean setThread(int min, int max);
+    
     void addScheduledTask(Taskable task);
 }

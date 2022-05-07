@@ -4,6 +4,7 @@ import cn.kizzzy.helper.LogHelper;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.function.Supplier;
 
 public class DefaultTaskExecutor implements TaskExecutor {
@@ -51,6 +52,16 @@ public class DefaultTaskExecutor implements TaskExecutor {
             LogHelper.error(null, var2);
             return false;
         }
+    }
+    
+    @Override
+    public boolean setThread(int min, int max) {
+        if (executor instanceof ThreadPoolExecutor) {
+            ((ThreadPoolExecutor) executor).setCorePoolSize(min);
+            ((ThreadPoolExecutor) executor).setMaximumPoolSize(max);
+            return true;
+        }
+        return false;
     }
     
     @Override
