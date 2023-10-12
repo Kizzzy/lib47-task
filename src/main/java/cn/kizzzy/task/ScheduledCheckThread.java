@@ -1,12 +1,15 @@
 package cn.kizzzy.task;
 
-import cn.kizzzy.helper.LogHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
 public class ScheduledCheckThread extends Thread {
+    
+    private static final Logger logger = LoggerFactory.getLogger(ScheduledCheckThread.class);
     
     private final List<Taskable> waitQueue;
     
@@ -62,7 +65,7 @@ public class ScheduledCheckThread extends Thread {
                     
                     time = System.currentTimeMillis() - time;
                     if (time > 100) {
-                        LogHelper.warn("check delay thread is spend too much time !!!  interval = {} ms", time);
+                        logger.warn("check delay thread is spend too much time !!!  interval = {} ms", time);
                     }
                     
                 }
@@ -74,7 +77,7 @@ public class ScheduledCheckThread extends Thread {
                 
                 Thread.sleep(10);
             } catch (Exception e) {
-                LogHelper.error("delayCheckThread error ! ", e);
+                logger.error("delayCheckThread error ! ", e);
             }
         }
     }

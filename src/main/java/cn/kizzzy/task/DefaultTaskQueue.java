@@ -1,18 +1,21 @@
 package cn.kizzzy.task;
 
-import cn.kizzzy.helper.LogHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.LinkedList;
 import java.util.Queue;
 
 public class DefaultTaskQueue implements TaskQueue, Runnable {
     
+    private static final Logger logger = LoggerFactory.getLogger(DefaultTaskQueue.class);
+    
     private volatile boolean running;
     
     private final Queue<Taskable> taskQueue =
         new LinkedList<>();
     
-    private TaskExecutor executor;
+    private final TaskExecutor executor;
     
     public DefaultTaskQueue(TaskExecutor executor) {
         this.executor = executor;
@@ -49,12 +52,12 @@ public class DefaultTaskQueue implements TaskQueue, Runnable {
                         
                         time = System.currentTimeMillis() - time;
                         if (time >= 500) {
-                            LogHelper.warn("task({}) execute much time: {} ms", task, time);
+                            logger.warn("task({}) execute much time: {} ms", task, time);
                         }
                     }
                 }
             } catch (InterruptedException e) {
-                LogHelper.error(null, e);
+                logger.error("", e);
             }
         }
     }

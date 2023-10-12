@@ -1,7 +1,8 @@
 package cn.kizzzy.task.old;
 
 import cn.kizzzy.event.EventArgs;
-import cn.kizzzy.helper.LogHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,11 +10,17 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 
 public abstract class TaskBase<T extends TaskContext> implements Taskable {
+    
+    private static final Logger logger = LoggerFactory.getLogger(TaskBase.class);
+    
     protected final ScheduledExecutorService executor;
+    
     protected final T context;
     
     private Future<?> future;
-    private Map<Integer, TaskCallback> callbacks = new HashMap<>();
+    
+    private final Map<Integer, TaskCallback> callbacks
+        = new HashMap<>();
     
     public TaskBase(ScheduledExecutorService executor, T context) {
         this.executor = executor;
@@ -92,7 +99,7 @@ public abstract class TaskBase<T extends TaskContext> implements Taskable {
             if (e instanceof InterruptedException) {
                 stop(null);
             } else {
-                LogHelper.error(null, e);
+                logger.error("execute task error", e);
             }
         }
     }

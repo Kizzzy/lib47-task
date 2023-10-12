@@ -1,9 +1,14 @@
 package cn.kizzzy.task;
 
-import cn.kizzzy.helper.LogHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class Task implements Taskable {
+    
+    private static final Logger logger = LoggerFactory.getLogger(Task.class);
+    
     private boolean valid = true;
+    
     private TaskQueue taskQueue;
     
     @Override
@@ -11,7 +16,7 @@ public abstract class Task implements Taskable {
         try {
             onTask();
         } catch (Exception e) {
-            LogHelper.error(null, e);
+            logger.error("execute task error", e);
         }
     }
     
@@ -41,6 +46,4 @@ public abstract class Task implements Taskable {
     public boolean canExec() {
         return true;
     }
-    
-    
 }

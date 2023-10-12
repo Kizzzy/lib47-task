@@ -1,6 +1,7 @@
 package cn.kizzzy.task;
 
-import cn.kizzzy.helper.LogHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -8,6 +9,8 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.function.Supplier;
 
 public class DefaultTaskExecutor implements TaskExecutor {
+    
+    private static final Logger logger = LoggerFactory.getLogger(DefaultTaskExecutor.class);
     
     private final Supplier<ExecutorService> executorServiceSupplier;
     
@@ -36,7 +39,7 @@ public class DefaultTaskExecutor implements TaskExecutor {
             taskQueue.start();
             return true;
         } catch (Exception var2) {
-            LogHelper.error(null, var2);
+            logger.error("start executor error", var2);
             return false;
         }
     }
@@ -49,7 +52,7 @@ public class DefaultTaskExecutor implements TaskExecutor {
             executor.shutdown();
             return true;
         } catch (Exception var2) {
-            LogHelper.error(null, var2);
+            logger.error("stop executor error", var2);
             return false;
         }
     }
